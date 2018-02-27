@@ -1,5 +1,17 @@
 .App {
-  text-align: center;
+  width: 100%;
+  position: absolute;
+  left: 0px;
+  top: 30px;
+  bottom: 0%;
+  background: lightgreen;
+}
+
+.dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: black;
 }
 
 .App-logo {

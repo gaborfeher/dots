@@ -4,15 +4,10 @@ import './App.css';
 
 class App extends Component {
   render() {
+    let dots = [{x: 10, y: 10}, {x: 10, y: 20}, {x: 50, y: 50}];
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        {dots.map((dot, i) => <p key={i} style={{left: dot.x, top: dot.y, position: 'absolute'}}>x</p>)}
       </div>
     );
   }

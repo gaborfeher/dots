@@ -6,8 +6,8 @@
 # testing
 /coverage
 
-# production
-/build
+# production goes to github.com
+# /build
 
 # misc
 .DS_Store

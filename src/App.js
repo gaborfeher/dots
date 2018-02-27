@@ -27,14 +27,12 @@ class App extends Component {
   }
 
   updateCanvas() {
-    console.log('updatecanvas1');
     const ctx = this.refs.canvas.getContext('2d');
     ctx.clearRect(0, 0, this.props.width, this.props.height);
     for (let i = 0; i < this.state.dots.length; ++i) {
       let dot = this.state.dots[i];
       ctx.fillRect(dot.x - 1, dot.y - 1, 3, 3);
     }
-    console.log('updatecanvas2');
   }
 
   render() {
@@ -45,11 +43,9 @@ class App extends Component {
               onClick={this.run}
               disabled={this.state.dots.length >= this.state.limit}>
             Mirror
-          </button>
-          <button onClick={this.reset}>Clear</button>
-
-          Number of dots: {this.state.dots.length}
-
+          </button> &nbsp;
+          <button onClick={this.reset}>Clear</button> &nbsp;
+          Number of dots: {this.state.dots.length} &nbsp;
           Limit: {this.state.limit}
         </div>
         <canvas
@@ -96,9 +92,7 @@ class App extends Component {
       }
       return dots.concat(newDots);
     }
-    console.log('set1');
     this.setState(prevState => ({dots: mirror(prevState.dots)}));
-    console.log('set2');
   }
 
   reset() {

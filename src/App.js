@@ -6,15 +6,21 @@ class App extends Component {
     super(props);
 
     this.props = props;
-
-    this.state = {
-      dots: [],
-      limit: 5000000,
-    };
+    this.state = this.initialState();
 
     this.addDot = this.addDot.bind(this);
     this.run = this.run.bind(this);
     this.reset = this.reset.bind(this);
+  }
+
+  initialState() {
+    return {
+      dots: [],
+      limit: 200000,
+      // for optimization:
+      dotSet: new Set(),
+      fullyMirroredUntilId: 0,
+    };
   }
 
   componentDidMount() {
@@ -66,35 +72,54 @@ class App extends Component {
     let x = event.nativeEvent.offsetX;
     let y = event.nativeEvent.offsetY;
     this.setState(prevState => ({
-      dots: prevState.dots.concat([{x: x, y: y}])
+      dots: prevState.dots.concat([{x: x, y: y}]),
     }));
   }
 
   run() {
-    let limit = this.state.limit;
+    function add(dot, dotList, dotSet) {
+      let dotKey = dot.x + '-' + dot.y;
+      if (!dotSet.has(dotKey)) {
+        dotSet.add(dotKey);
+        dotList.push(dot);
+      }
+    }
 
-    function mirror(dots, steps) {
-      let newDots = [];
-      for (var i = 0; i < dots.length; ++i) {
-        for (var j = 0; j < dots.length; ++j) {
-          if (dots.length + newDots.length >= limit) {
-            return dots.concat(newDots);
+    function mirrorTo(state, dotList, dotSet) {
+      for (var i = state.fullyMirroredUntilId; i < state.dots.length; ++i) {
+        for (var j = 0; j < state.dots.length; ++j) {
+          if (dotList.length >= state.limit) {
+            return;
           }
           if (i !== j) {
-            newDots.push({
-              x: 2 * dots[i].x - dots[j].x,
-              y: 2 * dots[i].y - dots[j].y
-            });
+            add({
+                x: 2 * state.dots[i].x - state.dots[j].x,
+                y: 2 * state.dots[i].y - state.dots[j].y
+              },
+              dotList,
+              dotSet);
           }
         }
       }
-      return dots.concat(newDots);
     }
-    this.setState(prevState => ({dots: mirror(prevState.dots)}));
+
+    function mirror(state) {
+      let dotList = state.dots.slice();  // shallow clone
+      let dotSet = new Set(state.dotSet);  // shallow clone
+      mirrorTo(state, dotList, dotSet);
+      return {
+        dots: dotList,
+        dotSet: dotSet,
+        fullyMirroredUntilId: state.dots.length
+      };
+    }
+
+    this.setState(prevState => (mirror(prevState)));
   }
 
   reset() {
-    this.setState(prevState => ({dots: []}));
+    let that = this;
+    this.setState(prevState => (that.initialState()));
   }
 
 }

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
@@ -76,13 +75,12 @@ class App extends Component {
 
     function mirror(dots, steps) {
       let newDots = [];
-      var len = dots.length;
       for (var i = 0; i < dots.length; ++i) {
         for (var j = 0; j < dots.length; ++j) {
           if (dots.length + newDots.length >= limit) {
             return dots.concat(newDots);
           }
-          if (i != j) {
+          if (i !== j) {
             newDots.push({
               x: 2 * dots[i].x - dots[j].x,
               y: 2 * dots[i].y - dots[j].y

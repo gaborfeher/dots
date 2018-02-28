@@ -37,7 +37,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <div>
+        <div className="App-header">
           <button
               onClick={this.run}
               disabled={this.state.dots.length >= this.state.limit}>
@@ -49,7 +49,7 @@ class App extends Component {
         </div>
         <canvas
             ref="canvas"
-            className="App"
+            className="Canvas"
             onClick={this.addDot}
             width={this.props.width}
             height={this.props.height}
